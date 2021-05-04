@@ -11,14 +11,14 @@ describe('HerosComponent (shallow test)', () => {
   let mockHeroService;
   let HEROES;
 
-  // @Component({
-  //   selector: 'app-hero',
-  //   template: '<div></div>'
-  // })
-  // class HeroComponent {
-  //   @Input() hero: Hero;
-  //   // @Output() delete = new EventEmitter();
-  // }
+  @Component({
+    selector: 'app-hero',
+    template: '<div></div>',
+  })
+  class FakeHeroComponent {
+    @Input() hero: Hero;
+    // @Output() delete = new EventEmitter();
+  }
 
   beforeEach(() => {
     HEROES = [
@@ -28,12 +28,16 @@ describe('HerosComponent (shallow test)', () => {
     ]
     mockHeroService = jasmine.createSpyObj(['getHeros', 'addHero', 'deleteHero']);
 
+
     TestBed.configureTestingModule({
-      declarations: [HeroesComponent],
+      declarations: [
+        HeroesComponent,
+        FakeHeroComponent
+      ],
       providers: [
         { provide: HeroService, useValue: mockHeroService }
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      // schemas: [NO_ERRORS_SCHEMA]
     })
     fixture = TestBed.createComponent(HeroesComponent);
   });
@@ -45,10 +49,10 @@ describe('HerosComponent (shallow test)', () => {
     expect(fixture.componentInstance.heroes.length).toBe(3);
   });
 
-  // it('should create one li for each hero', () => {
-  //   mockHeroService.getHeroes.and.returnValue(of(HEROES))
-  //   fixture.detectChanges();
+  it('should create one li for each hero', () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES))
+    fixture.detectChanges();
 
-  //   expect(fixture.debugElement.queryAll(By.css('li')).length).toBe(3);
-  // })
+    expect(fixture.debugElement.queryAll(By.css('li')).length).toBe(3);
+  })
 })
