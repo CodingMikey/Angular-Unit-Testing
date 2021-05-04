@@ -1,9 +1,11 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { TestBed } from "@angular/core/testing"
+import { ComponentFixture, TestBed } from "@angular/core/testing"
+import { By } from "@angular/platform-browser";
 import { HeroComponent } from "./hero.component"
 
+//Shallow component test
 describe('HeroComponent', () =>{
-  let fixture;
+  let fixture: ComponentFixture<HeroComponent>;
 
   beforeEach(() =>{
     TestBed.configureTestingModule({
@@ -24,6 +26,10 @@ describe('HeroComponent', () =>{
     fixture.componentInstance.hero = { id: 1, name: 'SuperDude', strength: 3};
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('a').textContent).toContain('SuperDude')
+    let deA = fixture.debugElement.query(By.css('a'));
+
+    expect(deA.nativeElement.textContent).toContain('SuperDude');
+
+    // expect(fixture.nativeElement.querySelector('a').textContent).toContain('SuperDude');
   });
 })
