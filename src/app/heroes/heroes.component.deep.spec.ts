@@ -7,12 +7,10 @@ import { HeroService } from "../hero.service";
 import { HeroComponent } from "../hero/hero.component";
 import { HeroesComponent } from "./heroes.component";
 
-describe('HerosComponent (deep test)', () => {
+describe('HeroesComponent (deep test)', () => {
   let fixture: ComponentFixture<HeroesComponent>;
   let mockHeroService;
   let HEROES;
-
-
 
   beforeEach(() => {
     HEROES = [
@@ -20,7 +18,7 @@ describe('HerosComponent (deep test)', () => {
       {id:2, name: 'Wonderful Woman', strength: 24},
       {id:3, name: 'SuperDude', strength: 55}
     ]
-    mockHeroService = jasmine.createSpyObj(['getHeros', 'addHero', 'deleteHero']);
+    mockHeroService = jasmine.createSpyObj(['getHeroes', 'addHero', 'deleteHero']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -34,10 +32,18 @@ describe('HerosComponent (deep test)', () => {
     })
     fixture = TestBed.createComponent(HeroesComponent);
 
-    fixture.detectChanges();
+    
   });
 
-  it('should be true', () => {
-    expect(true).toBe(true);
+  it('should render each hero as a HeroComponent', () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+
+    fixture.detectChanges();
+
+    const heroComponentDEs = fixture.debugElement.queryAll(By.directive(HeroComponent));
+    expect(heroComponentDEs.length).toEqual(3);
+    for(let i=0; i < heroComponentDEs.length; i++) {
+      expect(heroComponentDEs[i].componentInstance.hero).toEqual(HEROES[i])
+    }
   })
 })
