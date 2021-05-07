@@ -32,7 +32,7 @@ describe('HeroesComponent (deep test)', () => {
     })
     fixture = TestBed.createComponent(HeroesComponent);
 
-    
+
   });
 
   it('should render each hero as a HeroComponent', () => {
@@ -49,7 +49,7 @@ describe('HeroesComponent (deep test)', () => {
 
   it(`should call heroService.deleteHero when the Hero Component's delete button is clicked`, () => {
 
-    spyOn(fixture.componentInstance, 'delete');  
+    spyOn(fixture.componentInstance, 'delete');
     mockHeroService.getHeroes.and.returnValue(of(HEROES));
 
     fixture.detectChanges();
@@ -68,8 +68,13 @@ describe('HeroesComponent (deep test)', () => {
     const name = "Mr. Ice";
     mockHeroService.addHero.and.returnValue(of({id: 5, name: name, strength: 4}));
     const inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
-    const addButton = fixture.debugElement.
+    const addButton = fixture.debugElement.queryAll(By.css('button'))[0];
 
     inputElement.value = name;
+    addButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const heroText = fixture.debugElement.query(By.css('ul')).nativeElement.textContent;
+    expect(heroText).toContain(name);
   })
 })
